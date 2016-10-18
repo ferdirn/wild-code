@@ -1,0 +1,17 @@
+<ion-header-bar class="bar-positive">
+  <div class="buttons">
+    <h1 class="title">Ionic List Refresh</h1>
+  </div>
+</ion-header-bar>
+
+<ion-content ng-controller="AppCtrl">
+  <ion-refresher 
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+  </ion-refresher>
+  <ion-list>
+    <ion-item ng-repeat="item in items">
+      Item {{ item.id }}
+    </ion-item>
+  </ion-list>
+</ion-content>
