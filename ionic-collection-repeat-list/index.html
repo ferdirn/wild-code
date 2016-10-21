@@ -1,0 +1,25 @@
+<ion-header-bar class="bar-positive">
+  <div class="buttons">
+    <h1 class="title">Ionic List</h1>
+  </div>
+</ion-header-bar>
+
+<ion-content ng-controller="AppCtrl">
+  <ion-list>
+    <ion-item collection-repeat="item in items">
+      <div class="row responsive-sm">
+        <div class="col">
+          <div>Item Id {{item.id}}</div>
+        </div>
+        <div class="col">
+          <a>Item Next Id {{item.nextId}}</a>
+        </div>
+        <div class="col">
+          <div>Item Another Id {{item.anotherId}}</div>
+        </div>
+      </div>
+
+    </ion-item>
+  </ion-list>
+</ion-content>
+
