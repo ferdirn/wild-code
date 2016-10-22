@@ -1,0 +1,16 @@
+<ion-header-bar class="bar-positive">
+  <div class="buttons">
+    <button class="button button-icon icon ion-ios-minus-outline" ng-click="showDelete = !showDelete"></button>
+    <h1 class="title">Ionic List Delete</h1>
+  </div>
+</ion-header-bar>
+
+<ion-content ng-controller="AppCtrl">
+  <ion-list show-delete="showDelete">
+    <ion-item ng-repeat="item in items">
+      <ion-delete-button class="ion-minus-circled" ng-click="deleteItem(item)"></ion-delete-button>
+      Item {{ item.id }}
+    </ion-item>
+  </ion-list>
+</ion-content>
+
