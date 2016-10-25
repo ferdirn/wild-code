@@ -1,0 +1,14 @@
+<ion-header-bar class="bar-positive">
+  <div class="buttons">
+    <h1 class="title">Ionic List</h1>
+  </div>
+</ion-header-bar>
+
+<ion-content ng-controller="AppCtrl">
+  <ion-list>
+    <ion-item ng-repeat="item in items">
+      Item {{ item.id }}
+    </ion-item>
+  </ion-list>
+</ion-content>
+
