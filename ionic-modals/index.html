@@ -1,0 +1,23 @@
+<ion-header-bar class="bar-positive">
+  <div class="buttons">
+    <h1 class="title">Ionic Modal</h1>
+  </div>
+</ion-header-bar>
+
+<ion-content ng-controller="AppCtrl" class="padding">
+  <button class="button button-block" ng-click="openModal()">Click to Open Modal</button>
+</ion-content>
+
+<script id="my-modal.html" type="text/ng-template">
+  <ion-modal-view>
+    <ion-header-bar>
+      <div class="buttons">
+        <h1 class="title">My Modal title</h1>
+        <button class="button button-icon ion-ios-close-empty" ng-click="closeModal()"></button>
+      </div>
+    </ion-header-bar>
+    <ion-content>
+      Hello!
+    </ion-content>
+  </ion-modal-view>
+</script>
