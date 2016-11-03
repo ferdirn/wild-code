@@ -1,0 +1,64 @@
+<ion-nav-bar class="bar-positive">
+  <ion-nav-back-button>
+  </ion-nav-back-button>
+</ion-nav-bar>
+
+<ion-nav-view>
+</ion-nav-view>
+
+<script id="templates/tabs.html" type="text/ng-template">
+  <ion-tabs class="tabs-positive tabs-icon-top">
+    <!-- Dashsboard Tab -->
+    <ion-tab title="Status" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/dash">
+      <ion-nav-view name="tab-dash">
+      </ion-nav-view>
+    </ion-tab>
+    
+    <!-- Chats Tab -->
+    <ion-tab title="Chats" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/chats">
+      <ion-nav-view name="tab-chats">
+      </ion-nav-view>
+    </ion-tab>
+    
+    <!-- Account Tab -->
+    <ion-tab title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account">
+      <ion-nav-view name="tab-account">
+      </ion-nav-view>
+    </ion-tab>
+  </ion-tabs>
+</script>
+
+<script id="templates/tab-dash.html" type="text/ng-template">
+  <ion-view title="Dashboard">
+    <ion-content class="padding">
+      <h1>Dash</h1>
+    </ion-content>
+  </ion-view>
+</script>
+
+<script id="templates/tab-chats.html" type="text/ng-template">
+  <ion-view title="Chats">
+    <ion-content class="padding">
+      <h1>Chats</h1>
+      <a class="button" href="#/tab/chatDetail">
+        Navigate to Chat Details
+      </a>
+    </ion-content>
+  </ion-view>
+</script>
+
+<script id="templates/tab-account.html" type="text/ng-template">
+  <ion-view title="Account">
+    <ion-content class="padding">
+      <h1>Account</h1>
+    </ion-content>
+  </ion-view>
+</script>
+
+<script id="templates/tab-chat-details.html" type="text/ng-template">
+  <ion-view title="Chat Details">
+    <ion-content class="padding">
+      <h1>Chat Details</h1>
+    </ion-content>
+  </ion-view>
+</script>
