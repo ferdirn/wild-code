@@ -1,0 +1,37 @@
+<ion-nav-bar class="bar-positive">
+  <ion-nav-back-button></ion-nav-back-button>
+</ion-nav-bar>
+
+<ion-nav-view>
+</ion-nav-view>
+
+<script id="templates/page1.html" type="text/ng-template">
+  <ion-view view-title="{{myTitle}}">
+    <ion-content class="padding">
+      <h1>Page 1</h1>
+      <button ui-sref="page2" class="button button-block">
+        Go to Page 2
+      </button>
+    </ion-content>
+  </ion-view>
+</script>
+
+<script id="templates/page2.html" type="text/ng-template">
+  <ion-view view-title="Page 2">
+    <ion-content class="padding">
+      <h1>Page 2</h1>
+      <button ui-sref="page3" class="button button-block">
+        Go to Page 3
+      </button>
+    </ion-content>
+  </ion-view>
+</script>
+
+<script id="templates/page3.html" type="text/ng-template">
+  <ion-view view-title="Page 3">
+    <ion-content class="padding">
+      <h1>Page 3</h1>
+    </ion-content>
+  </ion-view>
+</script>
+
