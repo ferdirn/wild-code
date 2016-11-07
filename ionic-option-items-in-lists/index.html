@@ -1,0 +1,16 @@
+<ion-header-bar class="bar-positive">
+  <div class="buttons">
+    <h1 class="title">Ionic List Option</h1>
+  </div>
+</ion-header-bar>
+
+<ion-content ng-controller="AppCtrl">
+  <ion-list>
+    <ion-item ng-repeat="item in items">
+      Item {{ item.id }}
+      <ion-option-button class="button-assertive" ng-click="edit(item)">Edit</ion-option-button>
+      <ion-option-button class="button-balanced" ng-click="share(item)">Share</ion-option-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
