@@ -1,0 +1,18 @@
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-resource.js"></script>
+
+<ion-header-bar class="bar-positive">
+  <div class="buttons">
+    <h1 class="title">Posting JSON</h1>
+  </div>
+</ion-header-bar>
+
+<ion-content ng-controller="AppCtrl" class="padding">
+  <form ng-submit="newPost()">
+    <label class="item item-input">
+      <span class="input-label">New Post</span>
+      <input ng-model="postData.text" type="text" placeholder="Enter Post Here">
+    </label>
+    <button type="submit" class="button button-positive button-block">Create</button>
+  </form>
+</ion-content>
+
