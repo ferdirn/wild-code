@@ -1,3 +1,5 @@
+#!/usr/local/bin/python
+
 class A():
     def __init__(self):
 #        return
