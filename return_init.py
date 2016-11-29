@@ -2,7 +2,7 @@
 
 class A():
     def __init__(self):
-#        return
+        return
         print 'Init'
 
     def show(self):
