@@ -250,7 +250,7 @@ class Moxy_MoxyMagazine_Model_Api extends Mage_Api_Model_Resource_Abstract
                 }
                 if ($productType == "bundle") {
                     if($itemProduct->getFinalPrice()) {
-                        $totalPrice = (string)$itemProduct->getFinalPrice();
+                        $totalPrice = (string) $itemProduct->getFinalPrice();
                     } else if ($itemProduct->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
                         $optionCol= $itemProduct->getTypeInstance(true)
                                             ->getOptionsCollection($itemProduct);
@@ -275,9 +275,9 @@ class Moxy_MoxyMagazine_Model_Api extends Mage_Api_Model_Resource_Abstract
                                 $price += round($minPrice,2);
                             }
                         }
-                        $totalPrice = (string)$price;
+                        $totalPrice = (string) $price;
                     } else {
-                        $totalPrice = (string)0;
+                        $totalPrice = (string) 0;
                     }
                 }
 
