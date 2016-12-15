@@ -201,42 +201,114 @@ class Moxy_MoxyMagazine_Model_Api extends Mage_Api_Model_Resource_Abstract
         session_decode($contents);
 
         // Customer Session
-        $customerId = $_SESSION['customer']['id'];
+        $customerId = $_SESSION["customer"]["id"];
         if ($customerId) {
             $data["customer_id"] = $customerId;
-            $data["wishlist_count"] = $_SESSION['customer']['wishlist_item_count'];
+            $data["wishlist_count"] = $_SESSION["customer"]["wishlist_item_count"];
             $checkout = $_SESSION["checkout"];
-            $quote_id = $checkout['quote_id_1'];
-            $data['quote_id'] = $quote_id;
-            Mage::getSingleton('checkout/session')->setQuoteId($quote_id);
+            $quote_id = $checkout["quote_id_1"];
+            $data["quote_id"] = $quote_id;
             $cart = Mage::getModel('sales/quote')->getCollection()
                         ->addFieldToFilter('entity_id', $quote_id)
                         ->getFirstItem();
-            $data["subtotal"] = $cart->getData()["subtotal"];
-            $data["customer_firstname"] = $cart->getData()["customer_firstname"];
-            $data["customer_lastname"] = $cart->getData()["customer_lastname"];
-            $data["customer_email"] = $cart->getData()["customer_email"];
-            $data["total_qty"] = count($cart->getAllVisibleItems());
-            foreach ($cart->getAllVisibleItems() as $item) {
+            $items = $cart->getAllVisibleItems();
+            $cartData = $cart->getData();
+            $data["subtotal"] = $cartData["subtotal"];
+            $data["customer_firstname"] = $cartData["customer_firstname"];
+            $data["customer_lastname"] = $cartData["customer_lastname"];
+            $data["customer_email"] = $cartData["customer_email"];
+            $data["total_qty"] = count($items);
+            $store_id = Mage::app()->getStore();
+            foreach ($items as $item) {
                 $product = array();
                 $productId = $item->getProductId();
                 $itemProduct = $item->getProduct();
+                $productSKU = $item->getSku();
+                $productName = $itemProduct->getName();
                 $product["product_id"] = $productId;
-                $product["product_name"] = $itemProduct->getName();
-                $product["product_price"] = $itemProduct->getPrice();
+                $product["product_sku"] = $productSKU;
                 $product["product_qty"] = $item->getQty();
-                $product["product_url"] = Mage::getResourceSingleton('catalog/product')->getAttributeRawValue($productId, 'url_key', Mage::app()->getStore());
+                $product["product_url"] = Mage::getResourceSingleton('catalog/product')->getAttributeRawValue($productId, 'url_key', $store_id);
 
                 $productModel = Mage::getModel('catalog/product')->load($productId);
-                $product["product_image"] = (string) Mage::helper('catalog/image')->init($productModel, 'thumbnail')->resize('46x46');
+                $productImage = (string) Mage::helper('catalog/image')->init($productModel, 'thumbnail')->resize('150x150');
 
+                $totalPrice = $itemProduct->getPrice();
+                $productType = $productModel->getTypeId();
+                $product["product_type"] = $productType;
+                if ($productType == "configurable") {
+                    $conf = Mage::getModel('catalog/product_type_configurable')->setProduct($productModel);
+                    $simple_collection = $conf->getUsedProductCollection()->addAttributeToSelect('*')->addFilterByRequiredOptions();
+                    foreach($simple_collection as $simple_product){
+                        if ($productSKU == $simple_product->getSku()) {
+                            $productName = $simple_product->getName();
+                            $totalPrice = $simple_product->getPrice();
+                            $productImage = (string) Mage::helper('catalog/image')->init($simple_product, 'thumbnail')->resize('150x150');
+                            break;
+                        }
+                    }
+                }
+                if ($productType == "bundle") {
+                    if($itemProduct->getFinalPrice()) {
+                        $totalPrice = (string)$itemProduct->getFinalPrice();
+                    } else if ($itemProduct->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
+                        $optionCol= $itemProduct->getTypeInstance(true)
+                                            ->getOptionsCollection($itemProduct);
+                        $selectionCol= $itemProduct->getTypeInstance(true)
+                                               ->getSelectionsCollection(
+                            $itemProduct->getTypeInstance(true)->getOptionsIds($itemProduct),
+                            $itemProduct
+                        );
+                        $optionCol->appendSelections($selectionCol);
+                        $price = $itemProduct->getPrice();
+
+                        foreach ($optionCol as $option) {
+                            if($option->required) {
+                                $selections = $option->getSelections();
+                                $minPrice = min(array_map(function ($s) {
+                                                return $s->price;
+                                            }, $selections));
+                                if($itemProduct->getSpecialPrice() > 0) {
+                                    $minPrice *= $itemProduct->getSpecialPrice()/100;
+                                }
+
+                                $price += round($minPrice,2);
+                            }
+                        }
+                        $totalPrice = (string)$price;
+                    } else {
+                        $totalPrice = (string)0;
+                    }
+                }
+
+                $product["product_name"] = $productName;
+                $product["product_price"] = $totalPrice;
+                $product["product_image"] = $productImage;
+
+                $options = $itemProduct->getTypeInstance(true)->getOrderOptions($itemProduct);
+                $result = array();
+                if ($options)
+                {
+                    if (isset($options['options']))
+                    {
+                      $result = array_merge($result, $options['options']);
+                    }
+                    if (isset($options['additional_options']))
+                    {
+                      $result = array_merge($result, $options['additional_options']);
+                    }
+                    if (!empty($options['attributes_info']))
+                    {
+                      $result = array_merge($options['attributes_info'], $result);
+                    }
+                }
+                $product["attributes"] = $result;
                 $data["cart"][] = $product;
             }
         }
-
         $time_end = microtime(true);
-
-        $data['execute_time'] = $time_end - $time_start;
+        session_destroy(session_id());
+        $data["execution_time"] = $time_end - $time_start;
 
         return $data;
     }
